@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gestión de Órdenes de Vuelo de Drones</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="https://esm.sh/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="preconnect" href="https://unpkg.com" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+</head>
+<body>
+  <header class="app-header">
+    <h1><img class="logo" src="https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=100&auto=format&fit=crop" alt="Drone" />Órdenes de Vuelo</h1>
+    <div class="session">
+      <select id="loginSelect" aria-label="Seleccionar usuario"></select>
+      <button id="loginBtn">Entrar</button>
+      <button id="logoutBtn" class="ghost" hidden>Salir</button>
+      <span id="roleBadge" class="role-badge" hidden></span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="panel">
+      <section class="block">
+        <h2>Órdenes</h2>
+        <div class="filters">
+          <select id="statusFilter">
+            <option value="">Todas</option>
+            <option value="programada">Programada</option>
+            <option value="salida">Salida</option>
+            <option value="entrada">Entrada</option>
+            <option value="cancelada">Cancelada</option>
+          </select>
+          <button id="newOrderBtn">Nueva Orden</button>
+        </div>
+        <ul id="ordersList" class="list" aria-live="polite"></ul>
+      </section>
+
+      <section class="block">
+        <h2>Detalles de Orden</h2>
+        <form id="orderForm">
+          <input type="hidden" id="orderId" />
+          <label>Título
+            <input id="orderTitle" required />
+          </label>
+          <label>Ubicación
+            <input id="orderLocation" placeholder="Ej: Bogotá, Colombia" />
+          </label>
+          <label>Piloto
+            <input id="orderPilot" required />
+          </label>
+          <label>ID del Dron
+            <input id="orderDroneId" required />
+          </label>
+          <label>Fecha/Hora
+            <input id="orderSchedule" type="datetime-local" required />
+          </label>
+          <label>Estado
+            <select id="orderStatus" required>
+              <option value="programada">Programada</option>
+              <option value="salida">Salida</option>
+              <option value="entrada">Entrada</option>
+              <option value="cancelada">Cancelada</option>
+            </select>
+          </label>
+          <div class="buttons">
+            <button type="submit" id="saveOrderBtn">Guardar</button>
+            <button type="button" id="deleteOrderBtn" class="danger">Eliminar</button>
+          </div>
+        </form>
+        <div class="route-tools">
+          <h3>Ruta del Vuelo</h3>
+          <div class="buttons">
+            <button id="startRouteBtn">Editar Ruta</button>
+            <button id="finishRouteBtn" class="ghost">Finalizar</button>
+            <button id="clearRouteBtn" class="ghost">Limpiar</button>
+          </div>
+          <p id="routeStats" class="muted">Sin ruta</p>
+        </div>
+        <div class="route-tools">
+          <h3>Área de Operación</h3>
+          <div class="buttons">
+            <button id="startAreaBtn">Editar Área</button>
+            <button id="finishAreaBtn" class="ghost">Finalizar</button>
+            <button id="clearAreaBtn" class="ghost">Limpiar</button>
+          </div>
+          <p id="areaStats" class="muted">Sin área</p>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Capas QGIS</h2>
+        <p class="muted">Cargue capas GeoJSON exportadas desde QGIS.</p>
+        <input id="qgisFileInput" type="file" accept=".geojson,application/geo+json" />
+        <ul id="layersList" class="list"></ul>
+      </section>
+    </aside>
+
+    <section class="map-wrap">
+      <div id="map" aria-label="Mapa de operaciones"></div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <span>Basado en capas de QGIS (GeoJSON). Guardado local.</span>
+  </footer>
+ 
+  <!-- UMD scripts: Leaflet y Turf -->
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script>
+
+  <script src="./app.js"></script>
+</body>
+</html>
